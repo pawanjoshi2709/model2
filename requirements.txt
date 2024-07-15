@@ -3,3 +3,4 @@ numpy
 deepface
 mtcnn
 opencv-python
+gunicorn
