@@ -4,3 +4,4 @@ deepface
 mtcnn
 opencv-python
 gunicorn
+tf-keras
