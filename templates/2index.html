@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Upload and Processing</title>
+    <script>
+        function updateProgress() {
+            fetch('/progress')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('progress').innerText = `Processing: ${data.progress}%`;
+                    if (data.progress < 100) {
+                        setTimeout(updateProgress, 1000);
+                    } else {
+                        document.getElementById('download-link').style.display = 'block';
+                    }
+                });
+        }
+
+        function startProcessing() {
+            document.getElementById('progress').innerText = 'Processing: 0%';
+            document.getElementById('download-link').style.display = 'none';
+            setTimeout(updateProgress, 1000);
+        }
+    </script>
+</head>
+<body>
+    <h1>Upload and Process Video</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data" onsubmit="startProcessing()">
+        <input type="file" name="file" accept="video/*" required>
+        <button type="submit">Upload Video</button>
+    </form>
+    <div id="progress">Processing: 0%</div>
+
+    <div id="download-section" style="display: none;">
+        <h2>Download Processed Video</h2>
+        <a id="download-link" href="#" download>Download Processed Video</a>
+    </div>
+
+    {% if video_path %}
+    <script>
+        document.getElementById('download-link').href = "/download/{{ video_path }}";
+        document.getElementById('download-section').style.display = 'block';
+    </script>
+    {% endif %}
+</body>
+</html>
