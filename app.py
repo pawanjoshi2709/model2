@@ -106,7 +106,7 @@ def generate_frames(video_source, output_filename):
 
 @app.route('/')
 def index():
-    return render_template('1index.html')
+    return render_template('index.html')
 
 @app.route('/upload', methods=['POST'])
 def upload_video():
