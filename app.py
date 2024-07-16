@@ -23,7 +23,7 @@ def generate_frames(video_source, output_filename):
 
     # Define the codec and create VideoWriter object
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # Use MPEG-4 Part 2 codec
-    output_path = os.path.join(os.path.dirname(__file__), output_filename)
+    output_path = os.path.join('static', output_filename)
     out = cv2.VideoWriter(output_path, fourcc, fps, (width, height))
 
     frame_interval = int(fps / 3)  # Process 3 frames per second for video
@@ -106,7 +106,7 @@ def generate_frames(video_source, output_filename):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('1index.html')
 
 @app.route('/upload', methods=['POST'])
 def upload_video():
@@ -126,18 +126,18 @@ def upload_video():
 
         # Output filename for processed video
         output_filename = 'output_' + file.filename
-        output_path = os.path.join(os.path.dirname(__file__), output_filename)
+        output_path = os.path.join('static', output_filename)
 
         # Generate frames and save the processed video
         for _ in generate_frames(temp_path, output_filename):
             pass
 
         # Return the path to the output video file
-        return render_template('index.html', video_path=output_filename)
+        return render_template('1index.html', video_path=output_filename)
 
 @app.route('/download/<filename>')
 def download_file(filename):
-    return send_from_directory(os.path.dirname(__file__), filename, as_attachment=True)
+    return send_from_directory('static', filename, as_attachment=True)
 
 @app.route('/progress')
 def progress():
